@@ -8,4 +8,6 @@
 
 using namespace std;
 
+const int LIMITE = 50;          // Distância total da corrida (em "passos")
+const int NUM_CORREDORES = 5;   // Quantidade de corredores (threads)
 
