@@ -55,7 +55,7 @@ O programa simula uma corrida com cinco corredores, onde cada um avança em pass
 
 3. Execute o programa:
    ```bash
-   corrida.exe
+   ./corrida.exe
    ```
 
 > ⚠️ Em sistemas Windows, `usleep` não está disponível por padrão. Recomenda-se substituir `usleep()` por `Sleep()` (Windows API) ou usar bibliotecas compatíveis, caso queira plena portabilidade.
