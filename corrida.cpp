@@ -6,6 +6,14 @@
 #include <algorithm>
 #include <sstream>
 
+#ifdef _WIN32
+#include <windows.h>
+#define sleep_ms(ms) Sleep(ms)           // Windows: Sleep usa milissegundos
+#else
+#include <unistd.h>
+#define sleep_ms(ms) usleep((ms) * 1000) // Linux: usleep usa microssegundos
+#endif
+
 using namespace std;
 
 const int LIMITE = 50;          // Distância total da corrida (em "passos")
@@ -21,7 +29,7 @@ void correr(int id, vector<double>& tempos, vector<string>& logs) {
         progresso += rand() % 3 + 1;     // Avança de 1 a 3 passos aleatórios
         if (progresso > LIMITE) progresso = LIMITE;  // Garante que não passe do limite
 
-        usleep(rand() % 100000 + 50000); // Pausa entre 50ms e 150ms para simula velocidades diferentes
+        sleep_ms(rand() % 101 + 50); // Pausa entre 50ms e 150ms para simula velocidades diferentes
 
         // Cria a barra de progresso visual
         string visual = string(progresso, '=');
