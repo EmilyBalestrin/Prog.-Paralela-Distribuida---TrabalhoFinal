@@ -68,5 +68,22 @@ int main() {
         cout << log << endl;             // Mostra os tempos individuais de cada corredor
     }
 
+    // Cria um vetor de pares (tempo, id) para poder ordenar
+    vector<pair<double, int>> resultado;
+    for (int i = 0; i < NUM_CORREDORES; ++i) {
+        resultado.emplace_back(tempos[i], i);  // Salva o tempo e o índice (id do corredor)
+    }
 
+    // Ordena os corredores pelo tempo (do menor para o maior)
+    sort(resultado.begin(), resultado.end());
+
+    cout << "\n=== RESUMO FINAL (ORDEM DE CHEGADA) ===\n";
+    for (int pos = 0; pos < resultado.size(); ++pos) {
+        // Mostra o ranking final da corrida
+        cout << pos + 1 << "º lugar - Corredor " << (resultado[pos].second + 1)
+             << ": " << fixed << setprecision(3)
+             << resultado[pos].first << " segundos." << endl;
+    }
+
+    return 0;  // Fim do programa
 }
