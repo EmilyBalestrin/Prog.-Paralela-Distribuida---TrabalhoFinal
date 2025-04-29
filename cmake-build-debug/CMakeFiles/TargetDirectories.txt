@@ -1,0 +1,3 @@
+/home/emily-balestrin/Faculdade/ProgParalelaDistribuida/TrabalhoFinal/cmake-build-debug/CMakeFiles/TrabalhoFinal.dir
+/home/emily-balestrin/Faculdade/ProgParalelaDistribuida/TrabalhoFinal/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/emily-balestrin/Faculdade/ProgParalelaDistribuida/TrabalhoFinal/cmake-build-debug/CMakeFiles/rebuild_cache.dir
