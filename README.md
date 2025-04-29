@@ -1,4 +1,4 @@
-# 🏁 Simulação Paralela de Corrida com OpenMP
+# 🏁 Simulação de Corrida com OpenMP
 
 ## 📌 Introdução
 
