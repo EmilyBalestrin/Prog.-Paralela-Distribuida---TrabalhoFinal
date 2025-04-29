@@ -63,5 +63,10 @@ int main() {
         int id = omp_get_thread_num();   // Cada thread recebe seu identificador (de 0 a NUM_CORREDORES - 1)
         correr(id, tempos, logs);        // Executa a corrida para esse corredor
     }
+    cout << "\n=== TEMPOS INDIVIDUAIS ===\n";
+    for (const auto& log : logs) {
+        cout << log << endl;             // Mostra os tempos individuais de cada corredor
+    }
+
 
 }
