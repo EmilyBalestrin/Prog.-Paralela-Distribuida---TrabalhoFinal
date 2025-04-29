@@ -9,7 +9,7 @@ Este projeto foi desenvolvido como parte do trabalho final da disciplina de **Pr
 - **Linguagem**: C++  
 - **Paralelismo**: OpenMP  
 - **Compiladores**: `g++` (Linux) ou `MSVC`/`MinGW` (Windows)
-- **Outros recursos**: `unistd.h` para temporização no Linux
+- **Outros recursos**: `unistd.h` para temporização no Linux e `<windows.h>` para temporização no Windows
 
 ## 🎮 O que o código faz
 
