@@ -49,3 +49,19 @@ void correr(int id, vector<double>& tempos, vector<string>& logs) {
     }
 }
 
+int main() {
+    srand(time(0));    // Inicializa o gerador de números aleatórios com base no horário atual
+
+    vector<double> tempos(NUM_CORREDORES, 0.0); // Vetor que armazena os tempos de cada corredor
+    vector<string> logs(NUM_CORREDORES);        // Vetor que armazena os logs/textos de cada corredor
+
+    cout << "=== INÍCIO DA CORRIDA ===\n\n";
+
+    // Lança threads paralelas para simular a corrida dos corredores
+#pragma omp parallel num_threads(NUM_CORREDORES)
+    {
+        int id = omp_get_thread_num();   // Cada thread recebe seu identificador (de 0 a NUM_CORREDORES - 1)
+        correr(id, tempos, logs);        // Executa a corrida para esse corredor
+    }
+
+}
