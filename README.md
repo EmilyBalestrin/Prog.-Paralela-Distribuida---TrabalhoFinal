@@ -1,24 +1,25 @@
 # 🏁 Simulação de Corrida com OpenMP
 
-## 📌 Introdução
+## 📌 Introdução  
+Este projeto foi desenvolvido como parte do trabalho final da disciplina de **Programação Paralela e Distribuída**, com o objetivo de aplicar conceitos de concorrência e paralelismo de forma prática e criativa. A proposta simula uma corrida de carros entre múltiplos pilotos (threads), destacando o uso do modelo de memória compartilhada com OpenMP e comparando o desempenho entre execuções sequencial e paralela.
 
-Este projeto foi desenvolvido como parte do trabalho final da disciplina de **Programação Paralela e Distribuída**, com o objetivo de aplicar conceitos de concorrência e paralelismo de forma prática e criativa. A proposta simula uma corrida entre múltiplos corredores (threads), destacando o uso do modelo de memória compartilhada com OpenMP e avaliando o desempenho da execução paralela.
-
-## 🛠️ Tecnologias Utilizadas
-
+## 🛠️ Tecnologias Utilizadas  
 - **Linguagem**: C++  
 - **Paralelismo**: OpenMP  
-- **Compiladores**: `g++` (Linux) ou `MSVC`/`MinGW` (Windows)
-- **Outros recursos**: `unistd.h` para temporização no Linux e `<windows.h>` para temporização no Windows
+- **Compiladores**: `g++` (Linux) ou `MSVC`/`MinGW` (Windows)  
+- **Outros recursos**: `unistd.h` para temporização no Linux e `<windows.h>` para temporização no Windows  
 
-## 🎮 O que o código faz
+## 🎮 Funcionalidades Principais  
+O programa simula uma corrida com cinco pilotos de carro, onde cada um avança em distâncias (unidades) aleatórias até completar um percurso definido. São realizadas **duas simulações**:  
 
-O programa simula uma corrida com cinco corredores, onde cada um avança em passos aleatórios até completar um percurso definido. Cada corredor é representado por uma *thread*, e o progresso de todos é exibido em tempo real com barras visuais. Ao final, o tempo de cada corredor é registrado e é apresentado um ranking de chegada.
+1. **🏎️ Versão Sequencial** (Qualificação):  
+   - Pilotos competem um de cada vez.  
+   - Usada como baseline para comparação de desempenho.  
 
-- Os corredores são executados em paralelo com `#pragma omp parallel`.
-- A sincronização de saídas no console e dos vetores de resultado é feita com `#pragma omp critical`.
-- A aleatoriedade no tempo de execução simula diferenças de velocidade entre os corredores.
-
+2. **🚥 Versão Paralela** (Corrida Real):  
+   - Todos os pilotos competem simultaneamente, cada um em uma *thread*.  
+   - Utiliza `#pragma omp parallel` para paralelismo.
+     
 ## 🖥️ Como executar
 
 ### ✅ Linux
