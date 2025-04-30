@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <sstream>
 
+// Configuração do sleep para Windows e Linux
 #ifdef _WIN32
 #include <windows.h>
 #define sleep_ms(ms) Sleep(ms)           // Windows: Sleep usa milissegundos
@@ -24,20 +25,19 @@ void correr(int id, vector<double>& tempos, vector<string>& logs) {
     int progresso = 0;                    // Armazena quantos "passos" o corredor já deu
     double inicio = omp_get_wtime();     // Marca o tempo de início da corrida desse corredor
 
-    // Enquanto o corredor não chegar ao fim...
+    // Loop principal do corredor
     while (progresso < LIMITE) {
         progresso += rand() % 3 + 1;     // Avança de 1 a 3 passos aleatórios
         if (progresso > LIMITE) progresso = LIMITE;  // Garante que não passe do limite
 
         sleep_ms(rand() % 101 + 50); // Pausa entre 50ms e 150ms para simula velocidades diferentes
 
-        // Cria a barra de progresso visual
-        string visual = string(progresso, '=');
-        if (progresso < LIMITE) visual += ">";
-
         // Seção crítica para evitar conflito de threads ao imprimir
         #pragma omp critical
         {
+            // Cria a barra de progresso visual
+            string visual = string(progresso, '=');
+            if (progresso < LIMITE) visual += ">";
             cout << "Corredor " << (id + 1) << ": " << visual << endl;
         }
     }
@@ -57,41 +57,79 @@ void correr(int id, vector<double>& tempos, vector<string>& logs) {
     }
 }
 
-int main() {
-    srand(time(0));    // Inicializa o gerador de números aleatórios com base no horário atual
+// Versão sequencial
+void corrida_sequencial(vector<double>& tempos, vector<string>& logs) {
+    for (int i = 0; i < NUM_CORREDORES; ++i) {
+        correr(i, tempos, logs);
+    }
+}
 
-    vector<double> tempos(NUM_CORREDORES, 0.0); // Vetor que armazena os tempos de cada corredor
-    vector<string> logs(NUM_CORREDORES);        // Vetor que armazena os logs/textos de cada corredor
-
-    cout << "=== INÍCIO DA CORRIDA ===\n\n";
-
-    // Lança threads paralelas para simular a corrida dos corredores
+// Versão paralela
+void corrida_paralela(vector<double>& tempos, vector<string>& logs) {
 #pragma omp parallel num_threads(NUM_CORREDORES)
     {
-        int id = omp_get_thread_num();   // Cada thread recebe seu identificador (de 0 a NUM_CORREDORES - 1)
-        correr(id, tempos, logs);        // Executa a corrida para esse corredor
+        int id = omp_get_thread_num();
+        correr(id, tempos, logs);
     }
-    cout << "\n=== TEMPOS INDIVIDUAIS ===\n";
-    for (const auto& log : logs) {
-        cout << log << endl;             // Mostra os tempos individuais de cada corredor
-    }
+}
 
-    // Cria um vetor de pares (tempo, id) para poder ordenar
+// Mostra os resultados na tela
+void exibir_resultados(const vector<double>& tempos, const vector<string>& logs) {
     vector<pair<double, int>> resultado;
     for (int i = 0; i < NUM_CORREDORES; ++i) {
-        resultado.emplace_back(tempos[i], i);  // Salva o tempo e o índice (id do corredor)
+        resultado.emplace_back(tempos[i], i);
+    }
+    sort(resultado.begin(), resultado.end());  // Ordena do menor tempo
+
+    // Imprime resultados
+    cout << "\n=== TEMPOS INDIVIDUAIS ===\n";
+    for (const auto& log : logs) {
+        cout << log << endl;
     }
 
-    // Ordena os corredores pelo tempo (do menor para o maior)
-    sort(resultado.begin(), resultado.end());
-
     cout << "\n=== RESUMO FINAL (ORDEM DE CHEGADA) ===\n";
-    for (int pos = 0; pos < resultado.size(); ++pos) {
-        // Mostra o ranking final da corrida
-        cout << pos + 1 << "º lugar - Corredor " << (resultado[pos].second + 1)
+    for (size_t pos = 0; pos < resultado.size(); ++pos) {
+        cout << pos + 1 << " lugar - Corredor " << (resultado[pos].second + 1)
              << ": " << fixed << setprecision(3)
              << resultado[pos].first << " segundos." << endl;
     }
+}
 
-    return 0;  // Fim do programa
+// Função principal
+int main() {
+    unsigned seed = time(0);
+    srand(seed);
+
+    // Execução sequencial
+    vector<double> tempos_seq(NUM_CORREDORES, 0.0);
+    vector<string> logs_seq(NUM_CORREDORES);
+
+    cout << "\n=== EXECUCAO SEQUENCIAL ===\n";
+    double inicio_seq = omp_get_wtime();
+    corrida_sequencial(tempos_seq, logs_seq);
+    double fim_seq = omp_get_wtime();
+    exibir_resultados(tempos_seq, logs_seq);
+
+    // Execução paralela
+    srand(seed); // Reseta a seed para mesma sequência aleatória
+    vector<double> tempos_par(NUM_CORREDORES, 0.0);
+    vector<string> logs_par(NUM_CORREDORES);
+
+    cout << "\n\n=== EXECUCAO PARALELA ===\n";
+    double inicio_par = omp_get_wtime();
+    corrida_paralela(tempos_par, logs_par);
+    double fim_par = omp_get_wtime();
+    exibir_resultados(tempos_par, logs_par);
+
+    // Comparação de desempenho
+    double tempo_total_seq = fim_seq - inicio_seq;
+    double tempo_total_par = fim_par - inicio_par;
+
+    cout << "\n\n=== ANALISE DE DESEMPENHO ===\n";
+    cout << fixed << setprecision(3);
+    cout << "Tempo total sequencial: " << tempo_total_seq << " segundos\n";
+    cout << "Tempo total paralelo:   " << tempo_total_par << " segundos\n";
+    cout << "Speedup: " << tempo_total_seq / tempo_total_par << endl;
+
+    return 0;
 }
