@@ -87,7 +87,7 @@ void exibir_resultados(const vector<double>& tempos, const vector<string>& logs)
         cout << log << endl;
     }
 
-    cout << "\n=== CLASSIFICAÇÃO FINAL ===\n";
+    cout << "\n=== CLASSIFICACAO FINAL ===\n";
     for (size_t pos = 0; pos < resultado.size(); ++pos) {
         cout << pos + 1 << " lugar - Piloto " << (resultado[pos].second + 1)
              << ": " << fixed << setprecision(3)
