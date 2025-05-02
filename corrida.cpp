@@ -22,7 +22,7 @@ const int NUM_PILOTOS = 5;   // Quantidade de pilotos (threads)
 
 // Função que simula a corrida de um piloto
 void corrida_piloto(int id, vector<double>& tempos, vector<string>& logs) {
-    int progresso = 0;                    // Armazena quantos "passos" o corredor já deu
+    int progresso = 0;                    // Armazena quantos "metros" o piloto já deu
     double inicio = omp_get_wtime();     // Marca o tempo de início da corrida desse corredor
 
     // Loop principal do corredor
